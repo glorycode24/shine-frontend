@@ -1,0 +1,64 @@
+/* src/components/Navbar.css */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #e8e0d5;
+  border-bottom: 1px solid #d0c8b8;
+  color: #333;
+}
+.navbar-logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #8b7355;
+}
+.nav-links a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+.navbar-cart {
+  font-weight: 500;
+  position: relative; /* Required for z-index to work */
+  z-index: 2;         /* Lifts this element above others */
+  cursor: pointer;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logout-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.login-link {
+  font-weight: 600;
+  text-decoration: none;
+  color: #333;
+}
+
+.profile-link {
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.profile-link:hover {
+  text-decoration: underline;
+}

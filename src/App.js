@@ -1,23 +1,50 @@
-import logo from './logo.svg';
 import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import HomePage from './pages/HomePage';
+import CartPage from './pages/CartPage';
+import ProductDetailPage from './pages/ProductDetailPage';
+import LoginPage from './pages/LogInPage';      
+import RegisterPage from './pages/RegisterPage'; 
+import ProtectedRoute from './utils/ProtectedRoute';
+import ProfilePage from './pages/ProfilePage';
+import CheckoutPage from './pages/CheckOutPage';     // 👈 IMPORT
+import OrderHistoryPage from './pages/OrderHistoryPage';
 
 function App() {
   return (
+    // The CartProvider should NOT be in this file anymore
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar />
+      <main>
+        {/* The Routes component wraps all the individual Route definitions */}
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />         {/* 👈 ADD */}
+          <Route path="/register" element={<RegisterPage />} />
+          {/* Route #1: The path "/" must match the Link's "to" attribute */}
+          <Route path="/" element={<HomePage />} />
+
+          {/* Route #2: The path "/cart" must match the Link's "to" attribute */}
+          <Route path="/cart" element={
+            <ProtectedRoute>
+            <CartPage />
+            </ProtectedRoute>
+            } />
+
+            {/* 👇 ADD THE NEW PROTECTED ROUTE FOR THE PROFILE 👇 */}
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/products/:id" element={<ProductDetailPage />} />
+          <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+          <Route path="/order-history" element={<ProtectedRoute><OrderHistoryPage /></ProtectedRoute>} />
+        </Routes>
+      </main>
     </div>
   );
 }
