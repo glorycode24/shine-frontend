@@ -3,11 +3,29 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
+import { OrderProvider } from './context/OrderContext';
+import { ReviewProvider } from './context/ReviewContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    {/* Wrapper #1: BrowserRouter MUST be one of the outermost wrappers */}
+    <BrowserRouter>
+      <AuthProvider> {/* 👈 WRAP WITH AUTH PROVIDER */}
+      {/* Wrapper #2: CartProvider is inside BrowserRouter */}
+      <CartProvider>
+        {/* Your App is the child of both */}
+        <OrderProvider>
+          <ReviewProvider>
+            <App />
+            </ReviewProvider>
+        </OrderProvider>
+      </CartProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

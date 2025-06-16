@@ -1,0 +1,12 @@
+{
+  "products": [
+    { "id": 1, "name": "Cotton T-Shirt", "price": 350, "category": "Shirts", "description": "A comfortable and breathable cotton t-shirt, perfect for everyday wear." },
+    { "id": 2, "name": "Denim Jeans", "price": 750, "category": "Pants", "description": "Classic fit denim jeans, durable and stylish for any occasion." },
+    { "id": 3, "name": "Pleated Midi Skirt", "price": 600, "category": "Skirts", "description": "Elegant pleated midi skirt, versatile for both casual and formal looks." },
+    { "id": 4, "name": "Athletic Shorts", "price": 400, "category": "Shorts", "description": "Lightweight and flexible athletic shorts, ideal for workouts." },
+    { "id": 5, "name": "Silk Blouse", "price": 800, "category": "Tops", "description": "Luxurious silk blouse, soft to the touch and perfect for a sophisticated outfit." },
+    { "id": 6, "name": "Summer Maxi Dress", "price": 1100, "category": "Dresses", "description": "Flowy and comfortable maxi dress, a must-have for warm weather." },
+    { "id": 7, "name": "Linen Button-Up", "price": 550, "category": "Shirts", "description": "Breathable linen button-up shirt, great for a relaxed yet polished look." },
+    { "id": 8, "name": "Tailored Trousers", "price": 900, "category": "Pants", "description": "Smart and tailored trousers, perfect for office wear or formal events." }
+  ]
+}
