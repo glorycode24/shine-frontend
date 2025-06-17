@@ -52,12 +52,18 @@ function ProductDetailPage() {
   return (
     <div className="container">
       <div className="product-detail-layout">
-        <div className="product-detail-image-placeholder">Image of {product.name}</div>
+        <div className="product-detail-image-wrapper">
+            <img 
+                src={product.imageUrl || 'https://via.placeholder.com/400x400.png?text=No+Image'} 
+                alt={product.productName}
+                className="product-detail-image"
+            />
+        </div>
         <div className="product-detail-info">
           {/* Use productName */}
           <h1>{product.productName}</h1>
           {/* Use category.name */}
-          <p className="product-detail-category">{product.category.name}</p>
+          <p className="product-detail-category">{product.category.categoryName}</p>
           {/* 'description' is the same */}
           <p className="product-detail-description">{product.description}</p>
           {/* 'price' is the same */}
