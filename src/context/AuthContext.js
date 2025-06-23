@@ -1,57 +1,58 @@
-// src/context/AuthContext.js
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import api from '../services/api'; // Ensure this path is correct
 
-// Create the context
-export const AuthContext = createContext(null);
+// 1. Create the Context
+const AuthContext = createContext(null);
 
-// A simple, fake user database for demonstration
-let fakeUsers = {
-  'testuser': { password: 'password123', name: 'Test User' },
-};
-
-// Create the provider component
-export const AuthProvider = ({ children }) => {
-  // State to hold the currently logged-in user, starts as null
+// 2. Create the Provider Component
+export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
+  const [token, setToken] = useState(() => localStorage.getItem('jwt_token')); // Use function to read only once
 
-const register = (username, password) => {
-    // Check if the username already exists
-    if (fakeUsers[username]) {
-      return { success: false, message: 'Username already taken.' };
-    }
-    fakeUsers[username] = { password: password, name: username };
-    setCurrentUser({ username: username, name: username });
+  // This effect runs whenever the 'token' state changes
+  useEffect(() => {
+    // 👇 DEFINE AN ASYNC FUNCTION INSIDE THE EFFECT 👇
+    const fetchUserProfile = async () => {
+      if (token) {
+        try {
+          // The interceptor in api.js automatically adds the token to this request
+          const response = await api.get('/api/users/me');
+          
+          // If successful, the user data from the API is our currentUser
+          setCurrentUser(response.data);
+        } catch (error) {
+          // If the API call fails, it means the token is likely invalid or expired.
+          console.error("Failed to fetch user profile, logging out:", error);
+          logout(); // Log out the user to clear the invalid state
+        }
+      } else {
+        // If there's no token, ensure currentUser is null
+        setCurrentUser(null);
+      }
+    };
 
-    console.log("Updated fake users:", fakeUsers); // For debugging
-    return { success: true };
-  };
+    fetchUserProfile();
+  }, [token]); // The dependency array ensures this runs when the token changes
 
-  const login = (username, password) => {
-    // In a real app, this would be a fetch() call to a backend API
-    const user = fakeUsers[username];
-    if (user && user.password === password) {
-      setCurrentUser({ username: username, name: user.name }); // Set the current user
-      return true; // Login successful
-    }
-    return false; // Login failed
+  // The login function takes the token from the API response
+  const login = (newToken) => {
+    localStorage.setItem('jwt_token', newToken);
+    setToken(newToken); // This will trigger the useEffect above
   };
 
   const logout = () => {
-    // In a real app, you might also call a backend endpoint
-    setCurrentUser(null); // Clear the user from state
+    localStorage.removeItem('jwt_token');
+    setToken(null); // This will also trigger the useEffect
   };
 
-  const value = {
-    currentUser,
-    login,
-    logout,
-    register,
-  };
+  // The value provided to all consuming components
+  const value = { currentUser, login, logout, token };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+}
 
-// Custom hook to easily use the auth context in other components
-export const useAuth = () => {
+// 3. Create a custom hook for easy access to the context
+export function useAuth() {
   return useContext(AuthContext);
-};
+}
