@@ -4,6 +4,7 @@ import { CartContext } from '../context/CartContext';
 import { Link, NavLink } from 'react-router-dom';
 import './Navbar.css';
 
+
 function Navbar() {
   const { cart } = useContext(CartContext);
   const { currentUser, logout } = useAuth();
