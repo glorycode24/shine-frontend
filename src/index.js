@@ -20,7 +20,9 @@ root.render(
         {/* Your App is the child of both */}
         <OrderProvider>
           <ReviewProvider>
-            <App />
+            <AuthProvider>
+              <App />
+            </AuthProvider>
             </ReviewProvider>
         </OrderProvider>
       </CartProvider>

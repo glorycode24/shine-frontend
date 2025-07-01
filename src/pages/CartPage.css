@@ -26,27 +26,64 @@
   background-color: #7a6345;
 }
 
+/* --- MODIFIED SECTION --- */
 .cart-summary {
   margin-top: 30px;
   padding: 20px;
-  background-color: #f0f0f0;
+  background-color: #f8f9fa; /* A slightly lighter, cleaner grey */
+  border: 1px solid #e9ecef; /* A subtle border */
   border-radius: 10px;
-  text-align: right;
+  max-width: 450px; /* Give it a max-width for better appearance */
+  margin-left: auto; /* Aligns the summary box to the right */
 }
 
 .cart-summary h3 {
   margin: 0 0 15px 0;
+  text-align: left; /* Align heading to the left */
 }
 
+/* --- NEW STYLES START HERE --- */
+
+/* This creates the two-column layout for each line item */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+/* This makes the final total line stand out */
+.total-row {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* This styles the horizontal line */
+.cart-summary hr {
+  border: none;
+  border-top: 1px solid #dee2e6;
+  margin: 15px 0;
+}
+
+/* --- NEW STYLES END HERE --- */
+
 .checkout-btn {
+  /* Make the button full-width within the summary box */
+  display: block;
+  width: 100%;
+  margin-top: 20px;
   padding: 12px 25px;
   background: #667eea;
   color: white;
   border: none;
-  border-radius: 25px;
+  border-radius: 8px; /* Slightly less rounded for a modern look */
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
+  text-align: center; /* Ensure text is centered */
+  text-decoration: none; /* In case it's a Link */
+  font-size: 1rem;
 }
 
 .checkout-btn:hover {

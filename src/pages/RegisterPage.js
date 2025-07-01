@@ -1,80 +1,106 @@
-// src/pages/RegisterPage.js --- UPGRADED VERSION ---
-
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import './AuthPages.css';
+import { useNavigate } from 'react-router-dom';
+import api from '../services/api'; // Use your central API service
+import './RegisterPage.css'; // We'll create some styles for this
 
 function RegisterPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+  });
+  const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const { register } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Clear previous errors
+    setError('');
+    setMessage('');
 
-    // --- Validation Checks ---
-    if (password !== confirmPassword) {
-      return setError('Passwords do not match.');
+    // Basic validation
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.password) {
+      setError('All fields are required.');
+      return;
     }
-    if (password.length < 6) {
-      return setError('Password must be at least 6 characters long.');
-    }
 
-    // Call the register function from our context
-    const result = register(username, password);
+    try {
+      // Send the data to the backend endpoint we created
+      const response = await api.post('/api/auth/register', formData);
+      
+      // On success, show a message and redirect to the login page
+      setMessage('Registration successful! Please log in.');
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000); // Wait 2 seconds before redirecting
 
-    if (result.success) {
-      navigate('/'); // Redirect to the homepage on successful registration
-    } else {
-      // Display the error message from the context (e.g., "Username already taken")
-      setError(result.message);
+    } catch (err) {
+      // If the API returns an error (e.g., email already exists)
+      setError(err.response?.data || 'Registration failed. Please try again.');
     }
   };
 
   return (
-    <div className="auth-container">
-      <form onSubmit={handleSubmit} className="auth-form">
-        <h2>Create Your Account</h2>
-        {error && <p className="auth-error">{error}</p>}
+    <div className="register-container">
+      <form onSubmit={handleSubmit} className="register-form">
+        <h2>Create an Account</h2>
+        {error && <p className="error-message">{error}</p>}
+        {message && <p className="success-message">{message}</p>}
+        
         <div className="form-group">
-          <label htmlFor="reg-username">Username</label>
+          <label htmlFor="firstName">First Name</label>
           <input
             type="text"
-            id="reg-username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="firstName"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
             required
           />
         </div>
+
         <div className="form-group">
-          <label htmlFor="reg-password">Password</label>
+          <label htmlFor="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
           <input
             type="password"
-            id="reg-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="confirm-password">Confirm Password</label>
-          <input
-            type="password"
-            id="confirm-password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="auth-button">Create Account</button>
-        <p className="auth-switch">
-          Already have an account? <Link to="/login">Sign In</Link>
-        </p>
+
+        <button type="submit" className="submit-button">Register</button>
       </form>
     </div>
   );
