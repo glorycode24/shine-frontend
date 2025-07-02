@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useCart } from '../context/CartContext';
+import { CartContext } from '../context/CartContext';
 import { Link, NavLink } from 'react-router-dom';
 import './Navbar.css';
 
 
 function Navbar() {
-  const { cart } = useCart();
+  const { cart } = useContext(CartContext);
   const { currentUser, logout } = useAuth();
   const [categories, setCategories] = useState([]);
 
-const totalItems = cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => {
     const fetchNavCategories = async () => {
