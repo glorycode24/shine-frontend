@@ -1,26 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom'; 
-import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext'; // Import the useAuth hook
-import { useReviews } from '../context/ReviewContext';
+// src/pages/ProductDetailPage.js --- UPGRADED VERSION ---
+
+import React, { useState, useEffect, useContext } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { CartContext } from '../context/CartContext';
+import { useReviews } from '../context/ReviewContext'; // 👈 Import our new hook
 import './ProductDetailPage.css';
 
 function ProductDetailPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  
-  // 👇 2. GET CONTEXT VALUES FROM THE CORRECT HOOKS
-  const { addToCart } = useCart(); 
-  const { currentUser } = useAuth();
+  const { addToCart } = useContext(CartContext);
+  const navigate = useNavigate();
+  const [buyNowQty, setBuyNowQty] = useState(1);
+
+  // --- 👇 Review System State and Functions 👇 ---
   const { addReview, getReviewsForProduct } = useReviews();
-  
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const productReviews = getReviewsForProduct(id);
-
-  // --- HANDLER FUNCTIONS ---
 
   const handleReviewSubmit = (e) => {
     e.preventDefault();
@@ -29,32 +27,20 @@ function ProductDetailPage() {
       return;
     }
     addReview(id, rating, comment);
+    // Reset form after submission
     setRating(0);
     setComment('');
   };
+  // --- 👆 End of Review System Logic 👆 ---
 
-  const handleBuyNow = async () => {
-    if (!product) return;
-    await addToCart(product.productId);
-    navigate('/checkout');
-  };
-
-  // --- DATA FETCHING EFFECT ---
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(`/api/products/${id}`);
-        const data = await response.json();
+    useEffect(() => {
+    // The proxy will handle the domain, we just need the path
+    fetch(`/api/products/${id}`)
+      .then(res => res.json())
+      .then(data => {
         setProduct(data);
-      } catch (error) {
-        console.error("Failed to fetch product:", error);
-      } finally {
         setLoading(false);
-      }
-    };
-    fetchProduct();
+      });
   }, [id]);
 
   if (loading) {
@@ -65,48 +51,47 @@ function ProductDetailPage() {
     return <div className="container"><h2>Product not found!</h2></div>;
   }
 
-  // --- THE SINGLE, FINAL RETURN STATEMENT ---
+  const handleBuyNow = () => {
+    navigate('/buy-now', { state: { product, quantity: buyNowQty } });
+  };
+
   return (
     <div className="container">
       <div className="product-detail-layout">
         <div className="product-detail-image-wrapper">
-          <img 
-              src={product.imageUrl || 'https://via.placeholder.com/400x400.png?text=No+Image'} 
-              alt={product.productName}
-              className="product-detail-image"
-          />
+            <img 
+                src={product.imageUrl || 'https://via.placeholder.com/400x400.png?text=No+Image'} 
+                alt={product.productName}
+                className="product-detail-image"
+            />
         </div>
         <div className="product-detail-info">
+          {/* Use productName */}
           <h1>{product.productName}</h1>
-          <p className="product-detail-category">{product.category?.categoryName}</p>
+          {/* Use category.name */}
+          <p className="product-detail-category">{product.category.categoryName}</p>
+          {/* 'description' is the same */}
           <p className="product-detail-description">{product.description}</p>
-          <p className="product-detail-price">₱{product.price?.toFixed(2)}</p>
-          
-          {/* 👇 3. CLEANED UP THE ACTION BUTTONS SECTION 👇 */}
-          <div className="product-actions">
-            {currentUser ? (
-              // If logged in, show the buttons
-              <>
-                <button onClick={() => addToCart(product.productId)} className="add-to-cart-btn-large">
-                  Add to Cart
-                </button>
-                <button onClick={handleBuyNow} className="buy-now-btn">
-                  Buy Now
-                </button>
-              </>
-            ) : (
-              // If not logged in, show the prompt
-              <div className="login-prompt">
-                <p>Please <Link to="/login">log in</Link> to add items to your cart.</p>
-              </div>
-            )}
+          {/* 'price' is the same */}
+          <p className="product-detail-price">₱{product.price.toFixed(2)}</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+            <label htmlFor="buy-now-qty">Qty:</label>
+            <input
+              id="buy-now-qty"
+              type="number"
+              min={1}
+              value={buyNowQty}
+              onChange={e => setBuyNowQty(Math.max(1, Number(e.target.value)))}
+              className="quantity-input"
+            />
+            <button onClick={handleBuyNow} className="buy-now-btn">Buy Now</button>
           </div>
-          
-          {/* The duplicate button has been removed */}
+          <button onClick={() => addToCart(product)} className="add-to-cart-btn-large">Add to Cart</button>
           <Link to="/" className="back-to-shop-link">← Back to all products</Link>
         </div>
       </div>
 
+      {/* --- 👇 REVIEW SECTION UI 👇 --- */}
       <div className="reviews-section">
         <h3>Customer Reviews</h3>
         {/* --- Review Form --- */}

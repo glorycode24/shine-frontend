@@ -15,17 +15,15 @@ root.render(
     {/* Wrapper #1: BrowserRouter MUST be one of the outermost wrappers */}
     <BrowserRouter>
       <AuthProvider> {/* 👈 WRAP WITH AUTH PROVIDER */}
-      {/* Wrapper #2: CartProvider is inside BrowserRouter */}
-      <CartProvider>
-        {/* Your App is the child of both */}
-        <OrderProvider>
-          <ReviewProvider>
-            <AuthProvider>
+        {/* Wrapper #2: CartProvider is inside BrowserRouter */}
+        <CartProvider>
+          {/* Your App is the child of both */}
+          <OrderProvider>
+            <ReviewProvider>
               <App />
-            </AuthProvider>
             </ReviewProvider>
-        </OrderProvider>
-      </CartProvider>
+          </OrderProvider>
+        </CartProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

@@ -1,11 +1,11 @@
 /* src/components/ProductCard.css */
 .product-card {
-  background: white;
-  border: 1px solid #e0d8c8;
-  border-radius: 15px;
-  padding: 20px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: var(--card-padding);
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 15px rgba(139, 115, 85, 0.05);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
@@ -46,17 +46,18 @@
 }
 
 .add-to-cart-btn {
-  background: #8b7355;
-  color: white;
+  background: var(--color-secondary);
+  color: var(--color-primary);
   border: none;
   border-radius: 25px;
   padding: 10px 20px;
   cursor: pointer;
   font-weight: 600;
   width: 100%;
-  transition: background-color 0.2s;
+  transition: border-color 0.2s, background 0.2s;
 }
 
 .add-to-cart-btn:hover {
-  background-color: #7a6345;
+  background: var(--color-accent);
+  color: var(--color-text);
 }
