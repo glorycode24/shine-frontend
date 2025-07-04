@@ -1,7 +1,7 @@
 // src/pages/ProductDetailPage.js --- UPGRADED VERSION ---
 
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
 import { useReviews } from '../context/ReviewContext'; // 👈 Import our new hook
 import './ProductDetailPage.css';
@@ -11,6 +11,8 @@ function ProductDetailPage() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const { addToCart } = useContext(CartContext);
+  const navigate = useNavigate();
+  const [buyNowQty, setBuyNowQty] = useState(1);
 
   // --- 👇 Review System State and Functions 👇 ---
   const { addReview, getReviewsForProduct } = useReviews();
@@ -49,6 +51,10 @@ function ProductDetailPage() {
     return <div className="container"><h2>Product not found!</h2></div>;
   }
 
+  const handleBuyNow = () => {
+    navigate('/buy-now', { state: { product, quantity: buyNowQty } });
+  };
+
   return (
     <div className="container">
       <div className="product-detail-layout">
@@ -68,6 +74,18 @@ function ProductDetailPage() {
           <p className="product-detail-description">{product.description}</p>
           {/* 'price' is the same */}
           <p className="product-detail-price">₱{product.price.toFixed(2)}</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+            <label htmlFor="buy-now-qty">Qty:</label>
+            <input
+              id="buy-now-qty"
+              type="number"
+              min={1}
+              value={buyNowQty}
+              onChange={e => setBuyNowQty(Math.max(1, Number(e.target.value)))}
+              className="quantity-input"
+            />
+            <button onClick={handleBuyNow} className="buy-now-btn">Buy Now</button>
+          </div>
           <button onClick={() => addToCart(product)} className="add-to-cart-btn-large">Add to Cart</button>
           <Link to="/" className="back-to-shop-link">← Back to all products</Link>
         </div>

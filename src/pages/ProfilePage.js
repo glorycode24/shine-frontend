@@ -16,12 +16,27 @@ function ProfilePage() {
     <div className="container">
       <div style={{ textAlign: 'center', margin: '40px 0' }}>
         <h2>Your Profile</h2>
-        <p style={{ fontSize: '1.2rem' }}>
-          <strong>Username:</strong> {currentUser.username}
-        </p>
-        <p style={{ fontSize: '1.2rem' }}>
-          <strong>Display Name:</strong> {currentUser.name}
-        </p>
+        {currentUser.firstName || currentUser.lastName ? (
+          <p style={{ fontSize: '1.2rem' }}>
+            <strong>Full Name:</strong> {`${currentUser.firstName || ''} ${currentUser.lastName || ''}`.trim()}
+          </p>
+        ) : null}
+        {currentUser.username && (
+          <p style={{ fontSize: '1.2rem' }}>
+            <strong>Username:</strong> {currentUser.username}
+          </p>
+        )}
+        {currentUser.email && (
+          <p style={{ fontSize: '1.2rem' }}>
+            <strong>Email:</strong> {currentUser.email}
+          </p>
+        )}
+        {/* Fallback for name if present and not already shown */}
+        {currentUser.name && !currentUser.firstName && !currentUser.lastName && (
+          <p style={{ fontSize: '1.2rem' }}>
+            <strong>Name:</strong> {currentUser.name}
+          </p>
+        )}
       </div>
 
       <hr style={{ margin: '40px 0' }} />

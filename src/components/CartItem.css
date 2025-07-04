@@ -25,6 +25,23 @@
   font-weight: bold;
   font-size: 1.1em;
 }
+
+.cart-item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  margin-right: 1rem;
+  border: 1px solid #eee;
+  background: #faf9f6;
+}
+
+.cart-item-category {
+  font-size: 0.9em;
+  color: #777;
+  margin: 0 0 5px 0;
+}
+
 /* Add these new styles to the BOTTOM of src/components/CartItem.css */
 
 .quantity-controls {

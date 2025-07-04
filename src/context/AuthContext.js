@@ -9,11 +9,13 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(() => localStorage.getItem('jwt_token')); // Use function to read only once
+  const [loading, setLoading] = useState(true); // Add loading state
 
   // This effect runs whenever the 'token' state changes
   useEffect(() => {
     // 👇 DEFINE AN ASYNC FUNCTION INSIDE THE EFFECT 👇
     const fetchUserProfile = async () => {
+      setLoading(true); // Start loading
       if (token) {
         try {
           // The interceptor in api.js automatically adds the token to this request
@@ -30,6 +32,7 @@ export function AuthProvider({ children }) {
         // If there's no token, ensure currentUser is null
         setCurrentUser(null);
       }
+      setLoading(false); // Done loading
     };
 
     fetchUserProfile();
@@ -47,7 +50,7 @@ export function AuthProvider({ children }) {
   };
 
   // The value provided to all consuming components
-  const value = { currentUser, login, logout, token };
+  const value = { currentUser, login, logout, token, loading };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

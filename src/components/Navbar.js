@@ -26,6 +26,15 @@ function Navbar() {
     fetchNavCategories();
   }, []);
 
+  // Helper to get the best display name
+  const getDisplayName = (user) => {
+    if (!user) return '';
+    if (user.firstName || user.lastName) {
+      return `${user.firstName || ''} ${user.lastName || ''}`.trim();
+    }
+    return user.name || user.username || user.email || '';
+  };
+
   return (
     <nav className="navbar">
       <Link to="/" className="navbar-logo">SHINE</Link>
@@ -46,7 +55,7 @@ function Navbar() {
       <div className="navbar-right">
         {currentUser ? (
           <div className="user-info">
-            <span>Hello, {currentUser.name}!</span>
+            <span>Hello, {getDisplayName(currentUser)}!</span>
             <Link to="/profile" className="profile-link">Profile</Link>
             <Link to="/order-history" className="profile-link">My Orders</Link>
             <button onClick={logout} className="logout-button">Logout</button>

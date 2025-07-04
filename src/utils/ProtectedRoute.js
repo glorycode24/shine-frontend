@@ -5,8 +5,13 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 // This component will receive another component as a 'children' prop
 function ProtectedRoute({ children }) {
-  const { currentUser } = useAuth(); // Get the current user from our AuthContext
+  const { currentUser, loading } = useAuth(); // Get the current user and loading state
   const location = useLocation(); // Get the current URL location
+
+  if (loading) {
+    // Show a loading indicator while checking auth status
+    return <div style={{textAlign: 'center', marginTop: '2rem'}}>Loading...</div>;
+  }
 
   // Check if there is a logged-in user
   if (!currentUser) {

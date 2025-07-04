@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import api from '../services/api'; // Use your central API service
 import './RegisterPage.css'; // We'll create some styles for this
 
@@ -13,6 +14,13 @@ function RegisterPage() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { currentUser, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && currentUser) {
+      navigate('/'); // Redirect to home if already logged in
+    }
+  }, [loading, currentUser, navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,6 +52,10 @@ function RegisterPage() {
       setError(err.response?.data || 'Registration failed. Please try again.');
     }
   };
+
+  if (loading) {
+    return <div style={{textAlign: 'center', marginTop: '2rem'}}>Loading...</div>;
+  }
 
   return (
     <div className="register-container">

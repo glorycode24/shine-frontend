@@ -187,4 +187,36 @@
   margin-bottom: 0.5rem;
 }
 
+.quantity-input {
+  width: 60px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-secondary);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  background: var(--color-primary);
+  color: var(--color-text);
+  margin-right: 0.5rem;
+}
+
+.buy-now-btn {
+  background: var(--color-secondary);
+  color: var(--color-primary);
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s;
+}
+
+.buy-now-btn:hover {
+  background: #7a6345;
+  color: var(--color-primary);
+}
+
+.add-to-cart-btn:hover {
+  background: #7a6345;
+  color: var(--color-primary);
+}
+
 /* ... other styles ... */
