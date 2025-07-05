@@ -6,11 +6,9 @@ import './Navbar.css';
 
 
 function Navbar() {
-  const { cart } = useContext(CartContext);
+  const { cartItemCount } = useContext(CartContext);
   const { currentUser, logout } = useAuth();
   const [categories, setCategories] = useState([]);
-
-  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => {
     const fetchNavCategories = async () => {
@@ -65,7 +63,7 @@ function Navbar() {
         )}
 
         <Link to="/cart" className="navbar-cart">
-          🛒 Cart ({totalItems})
+          🛒 Cart ({cartItemCount})
         </Link>
       </div>
     </nav>

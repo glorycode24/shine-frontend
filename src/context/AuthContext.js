@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import api from '../services/api'; // Ensure this path is correct
 
 // 1. Create the Context
-const AuthContext = createContext(null);
+export const AuthContext = createContext(null);
 
 // 2. Create the Provider Component
 export function AuthProvider({ children }) {
