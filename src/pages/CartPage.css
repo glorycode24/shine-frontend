@@ -14,7 +14,7 @@
   display: inline-block;
   margin-top: 20px;
   padding: 12px 25px;
-  background-color: #8b7355;
+  background-color: var(--color-accent);
   color: white;
   text-decoration: none;
   border-radius: 25px;
@@ -23,26 +23,90 @@
 }
 
 .continue-shopping-btn:hover {
-  background-color: #7a6345;
+  background-color: var(--color-accent-hover);
 }
 
-/* --- MODIFIED SECTION --- */
+/* Loading and Error States */
+.loading-message {
+  text-align: center;
+  padding: 50px 0;
+  color: var(--color-text);
+}
+
+.error-message {
+  text-align: center;
+  padding: 20px;
+  background-color: #fee;
+  color: #c33;
+  border-radius: var(--border-radius);
+  border: 1px solid #fcc;
+  margin: 20px 0;
+}
+
+.retry-btn {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.retry-btn:hover {
+  background-color: var(--color-accent-hover);
+}
+
+/* Cart Header */
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: var(--color-primary);
+  border: 1px solid var(--color-secondary);
+  border-radius: var(--border-radius);
+}
+
+.cart-header p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.clear-cart-btn {
+  padding: 8px 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.clear-cart-btn:hover {
+  background-color: #c82333;
+}
+
+/* Cart Summary */
 .cart-summary {
   margin-top: 30px;
   padding: 20px;
-  background-color: #f8f9fa; /* A slightly lighter, cleaner grey */
-  border: 1px solid #e9ecef; /* A subtle border */
-  border-radius: 10px;
-  max-width: 450px; /* Give it a max-width for better appearance */
-  margin-left: auto; /* Aligns the summary box to the right */
+  background-color: var(--color-primary);
+  border: 1px solid var(--color-secondary);
+  border-radius: var(--border-radius);
+  max-width: 450px;
+  margin-left: auto;
 }
 
 .cart-summary h3 {
   margin: 0 0 15px 0;
-  text-align: left; /* Align heading to the left */
+  text-align: left;
+  color: var(--color-text);
 }
-
-/* --- NEW STYLES START HERE --- */
 
 /* This creates the two-column layout for each line item */
 .summary-row {
@@ -50,6 +114,7 @@
   justify-content: space-between;
   margin-bottom: 10px;
   font-size: 1rem;
+  color: var(--color-text);
 }
 
 /* This makes the final total line stand out */
@@ -57,16 +122,15 @@
   font-size: 1.2rem;
   font-weight: bold;
   margin-top: 10px;
+  color: var(--color-text);
 }
 
 /* This styles the horizontal line */
 .cart-summary hr {
   border: none;
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid var(--color-secondary);
   margin: 15px 0;
 }
-
-/* --- NEW STYLES END HERE --- */
 
 .checkout-btn {
   /* Make the button full-width within the summary box */
@@ -74,10 +138,10 @@
   width: 100%;
   margin-top: 20px;
   padding: 12px 25px;
-  background: #667eea;
+  background: var(--color-accent);
   color: white;
   border: none;
-  border-radius: 8px; /* Slightly less rounded for a modern look */
+  border-radius: var(--border-radius);
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -87,5 +151,5 @@
 }
 
 .checkout-btn:hover {
-  background-color: #5a6ed0;
+  background-color: var(--color-accent-hover);
 }

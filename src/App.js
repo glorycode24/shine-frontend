@@ -12,12 +12,15 @@ import CheckoutPage from './pages/CheckOutPage';     // 👈 IMPORT
 import OrderHistoryPage from './pages/OrderHistoryPage';
 import BuyNowPage from './pages/BuyNowPage';
 import TrackOrderPage from './pages/TrackOrderPage';
+import AuthCheck from './components/AuthCheck'; // Temporary debug component
+
 
 function App() {
   return (
     // The CartProvider should NOT be in this file anymore
     <div className="App">
       <Navbar />
+      <AuthCheck /> {/* Temporary debug component */}
       <main>
         {/* The Routes component wraps all the individual Route definitions */}
         <Routes>
