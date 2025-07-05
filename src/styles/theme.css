@@ -1,0 +1,14 @@
+:root {
+  --color-primary: #F5F5DC;
+  --color-secondary: #8B7355;
+  --color-accent: #FFD700;
+  --color-text: #333333;
+  --color-bg: #FFFDF6;
+  --color-error: #D9534F;
+  --color-success: #5CB85C;
+
+  --border-radius: 8px;
+  --spacing: 1rem;
+  --card-padding: 1.5rem;
+  --button-padding: 0.5rem 1.5rem;
+} 

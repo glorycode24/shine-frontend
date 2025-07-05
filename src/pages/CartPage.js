@@ -1,63 +1,94 @@
-import React from 'react';
-import { useCart } from '../context/CartContext';
+// src/pages/CartPage.js --- BACKEND INTEGRATED VERSION ---
+import React, { useContext } from 'react';
+import { CartContext } from '../context/CartContext';
 import CartItem from '../components/CartItem';
 import { Link } from 'react-router-dom';
 import './CartPage.css';
-import api from '../services/api';
 
 function CartPage() {
-  const { cart } = useCart();
+  const { 
+    cart, 
+    loading, 
+    error, 
+    cartTotal, 
+    cartItemCount,
+    clearCart 
+  } = useContext(CartContext);
 
-  // Use optional chaining (?.) for safety while data is loading
-  const cartItems = cart?.items || [];
+  // Calculate VAT and total
+  const taxRate = 0.12; // 12% VAT
+  const taxAmount = cartTotal * taxRate;
+  const totalAmount = cartTotal + taxAmount;
 
-  const subtotal = cartItems.reduce((total, item) => {
-    return total + (item.product.price * item.quantity);
-  }, 0);
-
-  const taxRate = 0.12;
-  const taxAmount = subtotal * taxRate;
-  const totalAmount = subtotal + taxAmount;
-
-  // A better check for an empty or loading cart
-  if (!cart || cartItems.length === 0) {
+  if (loading) {
     return (
-      <div className="container empty-cart-message">
-        <h2>Your Shopping Cart is Empty</h2>
-        <Link to="/" className="continue-shopping-btn">Start Shopping</Link>
+      <div className="container">
+        <div className="loading-message">
+          <p>Loading your cart...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container">
+        <div className="error-message">
+          <p>Error: {error}</p>
+          <button onClick={() => window.location.reload()} className="retry-btn">
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container cart-page">
+    <div className="container">
       <h2 className="cart-page-title">Your Shopping Cart</h2>
 
-      <div className="cart-items-list">
-        {/* We map over cartItems, which is cart.items */}
-        {cartItems.map(item => (
-          // No more functions passed as props!
-          <CartItem key={item.cartItemId} item={item} />
-        ))}
-      </div>
+      {cart.length === 0 ? (
+        <div className="empty-cart-message">
+          <p>Your cart is currently empty.</p>
+          <Link to="/" className="continue-shopping-btn">Continue Shopping</Link>
+        </div>
+      ) : (
+        <div>
+          <div className="cart-header">
+            <p>Total Items: {cartItemCount}</p>
+            <button onClick={clearCart} className="clear-cart-btn">
+              Clear Cart
+            </button>
+          </div>
 
-      <div className="cart-summary">
-        <h3>Order Summary</h3>
-        <div className="summary-row">
-          <span>Subtotal</span>
-          <span>₱{subtotal.toFixed(2)}</span>
+          <div className="cart-items-list">
+            {cart.map(item => (
+              <CartItem
+                key={item.cartItemId}
+                item={item}
+              />
+            ))}
+          </div>
+
+          <div className="cart-summary">
+            <h3>Order Summary</h3>
+            <div className="summary-row">
+              <span>Subtotal ({cartItemCount} items)</span>
+              <span>₱{cartTotal.toFixed(2)}</span>
+            </div>
+            <div className="summary-row">
+              <span>VAT (12%)</span>
+              <span>₱{taxAmount.toFixed(2)}</span>
+            </div>
+            <hr />
+            <div className="summary-row total-row">
+              <strong>Total</strong>
+              <strong>₱{totalAmount.toFixed(2)}</strong>
+            </div>
+            <Link to="/checkout" className="checkout-btn">Proceed to Checkout</Link>
+          </div>
         </div>
-        <div className="summary-row">
-          <span>VAT (12%)</span>
-          <span>₱{taxAmount.toFixed(2)}</span>
-        </div>
-        <hr />
-        <div className="summary-row total-row">
-          <strong>Total</strong>
-          <strong>₱{totalAmount.toFixed(2)}</strong>
-        </div>
-        <Link to="/checkout" className="checkout-btn">Proceed to Checkout</Link>
-      </div>
+      )}
     </div>
   );
 }

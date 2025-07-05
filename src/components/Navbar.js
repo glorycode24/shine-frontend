@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useCart } from '../context/CartContext';
+import { CartContext } from '../context/CartContext';
 import { Link, NavLink } from 'react-router-dom';
 import './Navbar.css';
 
 
 function Navbar() {
-  const { cart } = useCart();
+  const { cartItemCount } = useContext(CartContext);
   const { currentUser, logout } = useAuth();
   const [categories, setCategories] = useState([]);
-
-const totalItems = cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
 
   useEffect(() => {
     const fetchNavCategories = async () => {
@@ -25,6 +23,15 @@ const totalItems = cart?.items?.reduce((total, item) => total + item.quantity, 0
     };
     fetchNavCategories();
   }, []);
+
+  // Helper to get the best display name
+  const getDisplayName = (user) => {
+    if (!user) return '';
+    if (user.firstName || user.lastName) {
+      return `${user.firstName || ''} ${user.lastName || ''}`.trim();
+    }
+    return user.name || user.username || user.email || '';
+  };
 
   return (
     <nav className="navbar">
@@ -46,7 +53,7 @@ const totalItems = cart?.items?.reduce((total, item) => total + item.quantity, 0
       <div className="navbar-right">
         {currentUser ? (
           <div className="user-info">
-            <span>Hello, {currentUser.name}!</span>
+            <span>Hello, {getDisplayName(currentUser)}!</span>
             <Link to="/profile" className="profile-link">Profile</Link>
             <Link to="/order-history" className="profile-link">My Orders</Link>
             <button onClick={logout} className="logout-button">Logout</button>
@@ -56,7 +63,7 @@ const totalItems = cart?.items?.reduce((total, item) => total + item.quantity, 0
         )}
 
         <Link to="/cart" className="navbar-cart">
-          🛒 Cart ({totalItems})
+          🛒 Cart ({cartItemCount})
         </Link>
       </div>
     </nav>

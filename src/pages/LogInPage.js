@@ -1,6 +1,6 @@
 // src/pages/LoginPage.js --- FINAL UPGRADED VERSION ---
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import api from '../services/api'; // Import your central API service
@@ -11,7 +11,7 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   
-  const { login } = useAuth(); // Get the login function from your context
+  const { login, currentUser, loading } = useAuth(); // Get the login function, user, and loading
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,6 +19,12 @@ function LoginPage() {
   // If they came from a protected route, it will redirect them back there.
   // Otherwise, it defaults to the homepage ('/').
   const from = location.state?.from?.pathname || "/";
+
+  useEffect(() => {
+    if (!loading && currentUser) {
+      navigate('/'); // Redirect to home if already logged in
+    }
+  }, [loading, currentUser, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,6 +52,10 @@ function LoginPage() {
       console.error("Login failed:", err);
     }
   };
+
+  if (loading) {
+    return <div style={{textAlign: 'center', marginTop: '2rem'}}>Loading...</div>;
+  }
 
   return (
     <div className="auth-container">

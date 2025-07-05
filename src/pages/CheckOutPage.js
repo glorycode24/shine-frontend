@@ -1,34 +1,34 @@
-// src/pages/CheckoutPage.js
+// src/pages/CheckOutPage.js
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useOrders } from '../context/OrderContext';
 import { CartContext } from '../context/CartContext';
-import './AuthPages.css'; // We can reuse the auth form styles
+import SuccessModal from '../components/SuccessModal';
+import './AuthPages.css';
 
 function CheckoutPage() {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const { addOrder } = useOrders();
-  const { cart, clearCart } = useContext(CartContext); // We need a 'clearCart' function
+  const { cart, clearCart } = useContext(CartContext);
   const navigate = useNavigate();
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const cartTotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
   const handleCheckout = (e) => {
     e.preventDefault();
     if (cart.length === 0) {
-      alert("Your cart is empty!");
+      alert('Your cart is empty!');
       return;
     }
-
-    // Add the order to our "database"
     addOrder(cart, cartTotal);
-
-    // Clear the shopping cart
     clearCart();
+    setShowSuccess(true);
+  };
 
-    // Redirect to a "Thank You" or "Order History" page
-    alert("Thank you for your order!");
+  const handleSuccessClose = () => {
+    setShowSuccess(false);
     navigate('/order-history');
   };
 
@@ -46,10 +46,27 @@ function CheckoutPage() {
         </div>
         <hr style={{margin: '20px 0'}} />
         <h3>Order Summary</h3>
-        <p>Total Items: {cart.length}</p>
+        {cart.length === 0 ? (
+          <p>Your cart is empty.</p>
+        ) : (
+          <ul style={{textAlign: 'left', marginBottom: '1rem'}}>
+            {cart.map(item => (
+              <li key={item.id}>
+                {item.name} (x{item.quantity}) - ₱{(item.price * item.quantity).toFixed(2)}
+              </li>
+            ))}
+          </ul>
+        )}
         <p><strong>Total Price: ₱{cartTotal.toFixed(2)}</strong></p>
         <button type="submit" className="auth-button" style={{marginTop: '20px'}}>Complete Order</button>
       </form>
+      <SuccessModal
+        open={showSuccess}
+        message="Thank you for your order!"
+        onClose={handleSuccessClose}
+        actionLabel="View Orders"
+        onAction={handleSuccessClose}
+      />
     </div>
   );
 }

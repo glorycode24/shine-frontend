@@ -10,12 +10,17 @@ import ProtectedRoute from './utils/ProtectedRoute';
 import ProfilePage from './pages/ProfilePage';
 import CheckoutPage from './pages/CheckOutPage';     // 👈 IMPORT
 import OrderHistoryPage from './pages/OrderHistoryPage';
+import BuyNowPage from './pages/BuyNowPage';
+import TrackOrderPage from './pages/TrackOrderPage';
+import AuthCheck from './components/AuthCheck'; // Temporary debug component
+
 
 function App() {
   return (
     // The CartProvider should NOT be in this file anymore
     <div className="App">
       <Navbar />
+      <AuthCheck /> {/* Temporary debug component */}
       <main>
         {/* The Routes component wraps all the individual Route definitions */}
         <Routes>
@@ -43,6 +48,8 @@ function App() {
           <Route path="/products/:id" element={<ProductDetailPage />} />
           <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
           <Route path="/order-history" element={<ProtectedRoute><OrderHistoryPage /></ProtectedRoute>} />
+          <Route path="/buy-now" element={<ProtectedRoute><BuyNowPage /></ProtectedRoute>} />
+          <Route path="/track-order/:orderId" element={<ProtectedRoute><TrackOrderPage /></ProtectedRoute>} />
         </Routes>
       </main>
     </div>

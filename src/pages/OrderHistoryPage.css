@@ -5,34 +5,77 @@
 }
 
 .order-card {
-  background: white;
-  border: 1px solid #eee;
-  border-radius: 10px;
+  background: var(--color-primary);
+  border: 1px solid var(--color-secondary);
+  border-radius: var(--border-radius);
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 15px rgba(139, 115, 85, 0.08);
 }
 
-.order-card h3 {
-  margin: 0 0 15px 0;
-  color: #8b7355;
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
 }
 
-.order-card p {
+.order-header h3 {
+  margin: 0;
+  color: var(--color-secondary);
+}
+
+.order-details {
+  margin-bottom: 15px;
+}
+
+.order-details p {
   margin: 0 0 5px 0;
+  color: var(--color-text);
 }
 
-.order-card h4 {
+.order-items h4 {
   margin: 15px 0 10px 0;
-  border-top: 1px solid #eee;
-  padding-top: 15px;
+  color: var(--color-text);
 }
 
-.order-card ul {
+.order-items ul {
   list-style: none;
   padding-left: 0;
+  margin: 0;
 }
 
-.order-card li {
+.order-items li {
   padding: 5px 0;
+  color: var(--color-text);
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.order-items li:last-child {
+  border-bottom: none;
+}
+
+.order-actions {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  text-align: right;
+}
+
+.track-order-btn {
+  display: inline-block;
+  background: var(--color-secondary);
+  color: var(--color-primary);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s;
+}
+
+.track-order-btn:hover {
+  background: #7a6345;
+  color: var(--color-primary);
 }
